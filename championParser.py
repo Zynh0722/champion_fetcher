@@ -2,13 +2,12 @@ import requests
 from bs4 import BeautifulSoup
 
 
-
 def main():
     soup = BeautifulSoup(requests.get('https://leagueoflegends.fandom.com/wiki/List_of_champions').text, 'html.parser')
 
     soup = soup.findAll('tbody')[1].findAll('tr')
 
-    soup = [node for node in [*map(lambda node: node.findAll('td'), soup)] if node != []]
+    soup = [node for node in [node.findAll('td') for node in soup] if node != []]
 
     for node in soup:
         node[0] = node[0].findAll('a', href=True, title=True)[1].contents
